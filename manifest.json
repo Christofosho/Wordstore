@@ -1,0 +1,30 @@
+{
+
+  "manifest_version": 2,
+  "name": "WordStore",
+  "version": "1.0",
+
+  "description": "Add words on a page to a word list, to be used for various purposes.",
+
+  "icons": {
+    "48": "icons/wordstore-48.png"
+  },
+
+  "browser_action": {
+    "default_icon": "icons/wordstore-32.png",
+    "default_title": "WordStore",
+    "default_popup": "popup/wordstore.html"
+  },
+
+  "permissions": [
+    "storage"
+  ],
+
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["plugin.js"]
+    }
+  ]
+
+}

@@ -1,0 +1,29 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="wordstore.css" />
+  </head>
+  <body>
+    <main id="wordstore" class="flex">
+      <header id="popup-header" class="flex">
+        <h1 id="popup-header__h1">WordStore</h1>
+        <img id="popup-header__img" src="../icons/wordstore-32.png" />
+      </header>
+      <hr class="hr">
+      <div id="popup-search" class="flex center">
+        <input type="search" id="popup-search__input" placeholder="Search Saved Content">
+        <select id="popup-search__select">
+          <option value="contains" selected="selected">Contains</option>
+          <option value="starts">Starts with</option>
+          <option value="ends">Ends with</option>
+        </select>
+      </div>
+      <div id="popup-body" class="flex center"></div>
+      <footer id="popup-footer" class="flex center">
+        <input type="text" class="word" id="word__new" placeholder="New Word">
+        <button type="submit" id="add">Add</button>
+      </footer>
+    </main>
+    <script src="wordstore.js"></script>
+  </body>
+</html>

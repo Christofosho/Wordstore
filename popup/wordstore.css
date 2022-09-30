@@ -1,0 +1,89 @@
+*, html, body {
+  margin: 0;
+  padding: 0;
+}
+
+#wordstore {
+  flex-direction: column;
+  align-items: center;
+  min-width: 400px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#popup-header {
+  justify-content: space-between;
+  align-items: center;
+  width: 90%;
+  max-height: 32px;
+  margin: 10px 0;
+}
+
+#popup-header__h1 {
+  font-size: 1.6em;
+  margin-right: 10px;
+}
+
+#popup-header__img {
+
+  height: 32px;
+  width: 32px;
+}
+
+.hr {
+  width: 90%;
+  margin-bottom: 10px;
+}
+
+.flex {
+  display: flex;
+}
+
+.center {
+  width: 90%;
+  align-self: center;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.pagination {
+  justify-content: center;
+}
+
+.pagination div:not(:last-child) {
+  margin-right: 5px;
+}
+
+.pagination__button {
+  width: 20px;
+  cursor: pointer;
+}
+
+#add, .remove, #popup-search__select {
+  width: 90px;
+}
+
+.word, #word__new, #popup-search__input {
+  width: 70%;
+}
+
+#popup-search {
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+#popup-body {
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+.word-row {
+  justify-content: space-between;
+  margin-bottom: 3px;
+}
+
+#popup-footer {
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
