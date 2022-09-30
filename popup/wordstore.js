@@ -16,16 +16,16 @@ let page = 1;
 
 // Adds a string to storage.local (different from localStorage).
 const addWord = event => {
+  if (WordInput.value === "") {
+    return;
+  }
+
+  if (WordInput.value.length > 1024) {
+    return;
+  }
+
   browser.storage.local.get()
     .then(wordstore => {
-
-      if (WordInput.value === "") {
-        return;
-      }
-
-      if (WordInput.value.length > 128) {
-        return;
-      }
 
       const word = WordInput.value.trim();
 
@@ -33,10 +33,8 @@ const addWord = event => {
         return;
       }
 
-      wordstore[word.toLowerCase()] = word;
-
       browser.storage.local
-        .set(wordstore)
+        .set({ [word.toLowerCase()]: word })
         .then(populateBody);
 
       WordInput.value = "";
@@ -98,8 +96,8 @@ const appendPagination = (parent, rowCount) => {
   pagination.appendChild(prev);
 
   const curr = document.createElement("div");
-  curr.className = "pagination__button";
-  curr.textContent = page;
+  curr.className = "pagination__page text-center";
+  curr.textContent = `${page} of ${pageCount}`;
   pagination.appendChild(curr);
 
   // Add "Next" button if not on the last page
@@ -148,6 +146,7 @@ const populateBody = () => {
 
         const WordElement = document.createElement("div");
         WordElement.className = "word";
+        WordElement.title = wordstore[word];
         WordElement.textContent = wordstore[word];
 
         const RemoveButton = document.createElement("button");

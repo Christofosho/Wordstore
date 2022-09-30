@@ -1,8 +1,8 @@
 {
-
   "manifest_version": 2,
   "name": "WordStore",
   "version": "1.0",
+  "default_locale": "en",
 
   "description": "Add words on a page to a word list, to be used for various purposes.",
 
@@ -16,15 +16,20 @@
     "default_popup": "popup/wordstore.html"
   },
 
+  "background": {
+    "scripts": ["background.js"]
+  },
+
   "permissions": [
-    "storage"
+    "storage",
+    "menus",
+    "activeTab"
   ],
 
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["plugin.js"]
+      "js": ["background.js"]
     }
   ]
-
 }

@@ -1,0 +1,16 @@
+{
+  "extensionName": {
+    "message": "WordStore",
+    "description": "Name of the extension."
+  },
+
+  "extensionDescription": {
+    "message": "Store and search words and phrases to help you keep track of what you need to know.",
+    "description": "Description of the add-on."
+  },
+
+  "menuItemAddSingleWord": {
+    "message": "WordStore: Add Selected Word",
+    "description": "Title of context menu item that removes itself when clicked."
+  }
+}

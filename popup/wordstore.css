@@ -1,13 +1,19 @@
 *, html, body {
   margin: 0;
   padding: 0;
+  overflow: hidden;
 }
 
 #wordstore {
   flex-direction: column;
   align-items: center;
   min-width: 400px;
+  max-width: 400px;
+  min-height: 405px;
+  max-height: 405px;
   font-family: Arial, Helvetica, sans-serif;
+
+  overflow: hidden;
 }
 
 #popup-header {
@@ -49,15 +55,17 @@
 
 .pagination {
   justify-content: center;
-}
-
-.pagination div:not(:last-child) {
-  margin-right: 5px;
+  text-align: center;
 }
 
 .pagination__button {
-  width: 20px;
+  width: 25px;
   cursor: pointer;
+  margin: 0 5px;
+}
+
+.pagination__page {
+  width: 50px;
 }
 
 #add, .remove, #popup-search__select {
@@ -76,11 +84,18 @@
 #popup-body {
   flex-direction: column;
   margin-bottom: 15px;
+  overflow: hidden;
 }
 
 .word-row {
   justify-content: space-between;
   margin-bottom: 3px;
+}
+
+.word {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 #popup-footer {
