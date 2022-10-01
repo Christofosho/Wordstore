@@ -1,6 +1,6 @@
 {
   "manifest_version": 2,
-  "name": "WordStore",
+  "name": "Wordstore",
   "version": "1.0",
   "default_locale": "en",
 
@@ -12,7 +12,7 @@
 
   "browser_action": {
     "default_icon": "icons/wordstore-32.png",
-    "default_title": "WordStore",
+    "default_title": "Wordstore",
     "default_popup": "popup/wordstore.html"
   },
 
@@ -28,7 +28,7 @@
 
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
+      "matches": ["*://*/*"],
       "js": ["background.js"]
     }
   ]

@@ -1,6 +1,6 @@
 {
   "extensionName": {
-    "message": "WordStore",
+    "message": "Wordstore",
     "description": "Name of the extension."
   },
 
@@ -10,7 +10,7 @@
   },
 
   "menuItemAddSingleWord": {
-    "message": "WordStore: Add Selected Word",
+    "message": "Wordstore: Add Selected Word",
     "description": "Title of context menu item that removes itself when clicked."
   }
 }

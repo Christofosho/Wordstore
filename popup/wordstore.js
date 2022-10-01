@@ -1,5 +1,5 @@
 /*
-  WordStore
+  Wordstore
 
   Store and search words and phrases to help
   you keep track of what you need to know.
@@ -7,10 +7,13 @@
   copyright © 2022 Christopher Snow
 */
 
-const WordInput = document.getElementById("word__new");
-const AddButton = document.getElementById("add");
-const SearchInput = document.getElementById("popup-search__input");
-const SearchFilter = document.getElementById("popup-search__select");
+const BodyTop = document.querySelector(".popup-body__top");
+const BodyContent = document.querySelector(".popup-body__content");
+const BodyBottom = document.querySelector(".popup-body__bottom");
+const WordInput = document.querySelector(".word__new");
+const AddButton = document.querySelector(".add");
+const SearchInput = document.querySelector(".popup-search__input");
+const SearchFilter = document.querySelector(".popup-search__select");
 
 let page = 1;
 
@@ -59,6 +62,10 @@ const removeWord = event => {
     .then(populateBody);
 };
 
+const copyWord = event => {
+  navigator.clipboard.writeText(event.target.value);
+};
+
 const loadNextPage = event => {
   browser.storage.local.get()
     .then(wordstore => {
@@ -78,34 +85,46 @@ const loadPrevPage = event => {
 
 // Adds pagination as the next child of the provided element
 const appendPagination = (parent, rowCount) => {
-  if (rowCount < 11) return;
+
+  // Remove old pagination
+  while (parent.lastChild) {
+    parent.removeChild(parent.lastChild);
+  }
+
+  // Do not draw pagination with 0 words
+  if (rowCount === 0) return;
 
   const pageCount = Math.ceil(rowCount / 10);
 
   const pagination = document.createElement("div");
-  pagination.className = "flex pagination";
+  pagination.classList.add("flex");
+  pagination.classList.add("pagination");
 
   // Add "Prev" button if not on first page
   const prev = document.createElement("div");
-  prev.className = "pagination__button";
-  prev.textContent = "<";
+  prev.classList.add("pagination__button");
+  prev.textContent = "←";
   if (page > 1) {
+    prev.classList.add("pagination__button--active");
     prev.onclick = loadPrevPage;
   }
 
   pagination.appendChild(prev);
 
   const curr = document.createElement("div");
-  curr.className = "pagination__page text-center";
+  curr.classList.add("pagination__page");
+  curr.classList.add("text-center");
+  curr.title = `Total stored: ${rowCount}`;
   curr.textContent = `${page} of ${pageCount}`;
   pagination.appendChild(curr);
 
   // Add "Next" button if not on the last page
 
   const next = document.createElement("div");
-  next.className = "pagination__button";
-  next.textContent = ">";
+  next.classList.add("pagination__button");
+  next.textContent = "→";
   if (page < pageCount) {
+    next.classList.add("pagination__button--active");
     next.onclick = loadNextPage;
   }
 
@@ -124,14 +143,13 @@ const populateBody = () => {
 
       /* Remove content */
 
-      const Body = document.getElementById("popup-body");
-      while (Body.lastChild) {
-        Body.removeChild(Body.lastChild);
+      while (BodyContent.lastChild) {
+        BodyContent.removeChild(BodyContent.lastChild);
       }
 
       /* Add top pagination */
 
-      appendPagination(Body, _words.length);
+      appendPagination(BodyTop, _words.length);
 
       /* Add stored content */
       const _page = page * 10;
@@ -142,54 +160,79 @@ const populateBody = () => {
         if (shouldfilterWord(word, SearchInput.value)) return;
 
         const WordRow = document.createElement("div");
-        WordRow.className = "flex word-row";
+        WordRow.classList.add("flex");
+        WordRow.classList.add("word-row");
 
-        const WordElement = document.createElement("div");
-        WordElement.className = "word";
-        WordElement.title = wordstore[word];
-        WordElement.textContent = wordstore[word];
+        const WordContainer = document.createElement("div");
+        WordContainer.classList.add("word-container");
+        WordContainer.title = wordstore[word];
+
+        const Word = document.createElement("span");
+        Word.classList.add("word");
+        Word.textContent = wordstore[word];
+
+        WordContainer.appendChild(Word);
+
+        const CopyButton = document.createElement("button");
+        CopyButton.classList.add("copy");
+        CopyButton.classList.add("padded-border");
+        CopyButton.textContent = "Copy";
+        CopyButton.value = wordstore[word];
+        CopyButton.onclick = copyWord;
+
+        WordContainer.appendChild(CopyButton);
 
         const RemoveButton = document.createElement("button");
-        RemoveButton.className = "remove";
+        RemoveButton.classList.add("remove");
+        RemoveButton.classList.add("padded-border");
         RemoveButton.textContent = "Remove";
         RemoveButton.value = word;
         RemoveButton.onclick = removeWord;
 
-        // #popup-body
+        WordContainer.appendChild(RemoveButton);
+
+        // .popup-body
+        //   .body-top
+        //   .body-content
         //     .word-row
         //         .word
         //         .remove
-        WordRow.appendChild(WordElement);
-        WordRow.appendChild(RemoveButton);
-        Body.appendChild(WordRow);
+        //   .body-bottom
+        WordRow.appendChild(WordContainer);
+        BodyContent.appendChild(WordRow);
       });
 
       // Add disclaimer if empty
       if (_words.length === 0) {
         const EmptyDescriptionElement = document.createElement("div");
-        EmptyDescriptionElement.className = "text-center";
+        EmptyDescriptionElement.classList.add("text-center");
         EmptyDescriptionElement.textContent = "There are no words currently stored.";
-        Body.appendChild(EmptyDescriptionElement);
+        BodyContent.appendChild(EmptyDescriptionElement);
       }
+
+      appendPagination(BodyBottom, _words.length);
     });
 };
 
 // Compares two strings based on filter type.
+// Filtering is case-insensitive.
 // Filter types include:
 //   - "Contains"
 //   - "Starts with"
 //   - "Ends with"
 const shouldfilterWord = (word, filter) => {
   const filterType = SearchFilter.value;
+  const lowerWord = word.toLowerCase();
+  const lowerFilter = filter.toLowerCase();
   switch (filterType) {
     case "contains":
-      return !word.includes(filter);
+      return !lowerWord.includes(lowerFilter);
 
     case "starts":
-      return word.substring(0, filter.length) !== filter;
+      return lowerWord.substring(0, filter.length) !== lowerFilter;
 
     case "ends":
-      return word.substring(word.length - filter.length) !== filter;
+      return lowerWord.substring(word.length - filter.length) !== lowerFilter;
 
     default:
       return false;
@@ -207,4 +250,6 @@ const addEventListeners = () => {
 document.addEventListener("DOMContentLoaded", () => {
   populateBody();
   addEventListeners();
+
+  SearchInput.focus();
 });
