@@ -26,7 +26,7 @@ with a given set of characters or words.
 4. Optional hyperlinking of list items.
 5. Wildcard character in search strings.
 
-# Licensing
+## Licensing
 
 This program is free software: you can redistribute it
 and/or modify it under the terms of the GNU General Public
