@@ -6,6 +6,9 @@
 
   "description": "Add words on a page to a word list, to be used for various purposes.",
 
+  "author": "Christopher Snow",
+  "homepage_url": "https://github.com/Christofosho/Wordstore",
+
   "icons": {
     "48": "icons/wordstore-48.png"
   },
