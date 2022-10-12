@@ -21,13 +21,13 @@
   see <https://www.gnu.org/licenses/>.
 */
 
-browser.menus.create({
+browser.contextMenus.create({
   id: "add-single-word",
   title: browser.i18n.getMessage("menuItemAddSingleWord"),
   contexts: ["selection"]
 });
 
-browser.menus.onClicked.addListener((info, tab) => {
+browser.contextMenus.onClicked.addListener((info, tab) => {
   switch (info.menuItemId) {
     case "add-single-word":
       saveWord(info.selectionText);
