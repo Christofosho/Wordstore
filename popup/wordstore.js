@@ -64,9 +64,9 @@ const addWord = event => {
 const addOnEnter = event => {
   event.stopPropagation();
 
-  if (event.code !== "Enter") return;
-
-  addWord(event);
+  if (event.code === "Enter" || event.code === "NumpadEnter") {
+    addWord(event);
+  }
 };
 
 // Removes a string from storage.local
