@@ -1,0 +1,37 @@
+{
+  "manifest_version": 3,
+  "name": "Wordstore",
+  "version": "1.1",
+  "default_locale": "en",
+
+  "description": "Add words on a page to a word list, to be used for various purposes.",
+
+  "author": "Christopher Snow",
+  "homepage_url": "https://github.com/Christofosho/Wordstore",
+
+  "icons": {
+    "48": "icons/wordstore-48.png"
+  },
+
+  "action": {
+    "default_icon": "icons/wordstore-32.png",
+    "default_title": "Wordstore",
+    "default_popup": "popup/wordstore.html"
+  },
+
+  "background": {
+    "service_worker": "background.js"
+  },
+
+  "permissions": [
+    "storage",
+    "contextMenus"
+  ],
+
+  "content_scripts": [
+    {
+      "matches": ["*://*/*"],
+      "js": ["background.js"]
+    }
+  ]
+}

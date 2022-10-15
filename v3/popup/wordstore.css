@@ -1,0 +1,198 @@
+
+/*
+ * Wordstore
+ * Copyright (c) 2022 Christopher Snow
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+*, html, body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.wordstore {
+  flex-direction: column;
+  align-items: center;
+  min-width: 400px;
+  max-width: 400px;
+  min-height: 430px;
+  max-height: 430px;
+  overflow: hidden;
+}
+
+.popup-header {
+  justify-content: space-between;
+  align-items: flex-end;
+  width: 95%;
+  height: 32px;
+  margin: 10px 0 5px;
+}
+
+.popup-header__h1 {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1.6em;
+  letter-spacing: 0.2em;
+  margin-right: 10px;
+}
+
+.popup-header__img {
+  height: 32px;
+  width: 32px;
+}
+
+.hr {
+  width: 95%;
+  margin-bottom: 10px;
+}
+
+.flex {
+  display: flex;
+}
+
+.center {
+  align-self: center;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.padded-border {
+  padding: 2px 4px;
+  border-radius: 0;
+  border: 1px solid #CDCDCD;
+  background-color: white;
+}
+
+.pagination {
+  justify-content: space-between;
+  text-align: center;
+  margin: 10px 0;
+
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.pagination__button {
+  width: 25px;
+  cursor: default;
+  user-select: none;
+}
+
+.pagination__button:hover {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.pagination__button--active {
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.pagination__page {
+  width: 50px;
+}
+
+.add,
+.popup-search__select {
+  width: 90px;
+}
+
+.add, .remove,
+.popup-search__select, .copy {
+  cursor: pointer;
+}
+
+.add:hover,
+.remove:hover,
+.popup-search__select:hover {
+  background-color: #EDEDED;
+}
+
+.word, .popup-search__input {
+  flex: 1;
+}
+
+.popup-search {
+  width: 95%;
+}
+
+.popup-body {
+  width: 95%;
+  flex-direction: column;
+  margin-bottom: 10px;
+  overflow: hidden;
+
+  flex: 1;
+}
+
+.popup-body__content {
+  flex: 1;
+}
+
+.word-row {
+  display: flex;
+}
+
+.word-container {
+  display: flex;
+  flex: 1;
+}
+
+.copy,
+.remove {
+  width: 60px;
+  display: none;
+}
+
+.copy:active,
+.remove:active {
+  border: 1px inset;
+}
+
+.word-container:hover .word {
+  background-color: #EDEDED;
+}
+
+.word-container:hover .copy,
+.word-container:hover .remove {
+  display: block;
+}
+
+.word-container:hover .copy:hover,
+.word-container:hover .remove:hover {
+  background-color: #EDEDED;
+}
+
+.word {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.9em;
+
+  padding: 3px;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  flex: 1;
+}
+
+.word:not(.word__new) {
+  padding-top: 3px;
+}
+
+.popup-footer {
+  width: 95%;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
