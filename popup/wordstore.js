@@ -31,32 +31,35 @@ const SearchFilter = document.querySelector(".popup-search__select");
 
 let page = 1;
 
+// Support for Chrome browser object.
+const browser = window.chrome ? chrome : browser;
+
 // Adds a string to storage.local (different from localStorage).
 const addWord = event => {
-  if (WordInput.value === "") {
+  const word = WordInput.value.trim();
+
+  if (word === "") {
     return;
   }
 
-  if (WordInput.value.length > 1024) {
+  if (word.length > 1024) {
     return;
   }
 
-  browser.storage.local.get()
-    .then(wordstore => {
+  getStore().then(wordstore => {
+    if (wordstore[word.toLowerCase()]) {
+      return;
+    }
 
-      const word = WordInput.value.trim();
+    browser.storage.local
+      .set({ "wordstore": {
+        ...wordstore,
+        [word.toLowerCase()]: word
+      }}, populateBody);
 
-      if (wordstore[word.toLowerCase()]) {
-        return;
-      }
-
-      browser.storage.local
-        .set({ [word.toLowerCase()]: word })
-        .then(populateBody);
-
-      WordInput.value = "";
-      WordInput.focus();
-    });
+    WordInput.value = "";
+    WordInput.focus();
+  }, error => console.error(error));
 };
 
 // Adds a string to storage.local
@@ -71,9 +74,12 @@ const addOnEnter = event => {
 
 // Removes a string from storage.local
 const removeWord = event => {
-  browser.storage.local
-    .remove(event.target.value)
-    .then(populateBody);
+  getStore().then(wordstore => {
+    if (Object.keys(wordstore).includes(event.target.value)) {
+      delete wordstore[event.target.value];
+      browser.storage.local.set({ "wordstore": wordstore }, populateBody);
+    }
+  }, error => console.error(error));
 };
 
 const copyWord = event => {
@@ -81,13 +87,12 @@ const copyWord = event => {
 };
 
 const loadNextPage = event => {
-  browser.storage.local.get()
-    .then(wordstore => {
-      if (page < Object.keys(wordstore).length) {
-        ++page;
-        populateBody();
-      }
-    });
+  getStore().then(wordstore => {
+    if (page < Object.keys(wordstore).length) {
+      ++page;
+      populateBody();
+    }
+  }, error => console.error(error));
 };
 
 const loadPrevPage = event => {
@@ -150,82 +155,80 @@ const appendPagination = (parent, rowCount) => {
 // Clears #popup-body children, and adds one
 // new row for each stored string within storage.local.
 const populateBody = () => {
-  browser.storage.local.get()
-    .then(wordstore => {
+  getStore().then(wordstore => {
+    let _words = Object.keys(wordstore);
 
-      let _words = Object.keys(wordstore);
+    /* Remove content */
 
-      /* Remove content */
+    while (BodyContent.lastChild) {
+      BodyContent.removeChild(BodyContent.lastChild);
+    }
 
-      while (BodyContent.lastChild) {
-        BodyContent.removeChild(BodyContent.lastChild);
-      }
+    /* Add top pagination */
 
-      /* Add top pagination */
+    appendPagination(BodyTop, _words.length);
 
-      appendPagination(BodyTop, _words.length);
+    /* Add stored content */
+    const _page = page * 10;
+    _words.slice(_page - 10, _page)
+    .forEach(word => {
 
-      /* Add stored content */
-      const _page = page * 10;
-      _words.slice(_page - 10, _page)
-      .forEach(word => {
+      // Filter out if no match
+      if (shouldfilterWord(word, SearchInput.value)) return;
 
-        // Filter out if no match
-        if (shouldfilterWord(word, SearchInput.value)) return;
+      const WordRow = document.createElement("div");
+      WordRow.classList.add("flex");
+      WordRow.classList.add("word-row");
 
-        const WordRow = document.createElement("div");
-        WordRow.classList.add("flex");
-        WordRow.classList.add("word-row");
+      const WordContainer = document.createElement("div");
+      WordContainer.classList.add("word-container");
+      WordContainer.title = wordstore[word];
 
-        const WordContainer = document.createElement("div");
-        WordContainer.classList.add("word-container");
-        WordContainer.title = wordstore[word];
+      const Word = document.createElement("span");
+      Word.classList.add("word");
+      Word.textContent = wordstore[word];
 
-        const Word = document.createElement("span");
-        Word.classList.add("word");
-        Word.textContent = wordstore[word];
+      WordContainer.appendChild(Word);
 
-        WordContainer.appendChild(Word);
+      const CopyButton = document.createElement("button");
+      CopyButton.classList.add("copy");
+      CopyButton.classList.add("padded-border");
+      CopyButton.textContent = "Copy";
+      CopyButton.value = wordstore[word];
+      CopyButton.onclick = copyWord;
 
-        const CopyButton = document.createElement("button");
-        CopyButton.classList.add("copy");
-        CopyButton.classList.add("padded-border");
-        CopyButton.textContent = "Copy";
-        CopyButton.value = wordstore[word];
-        CopyButton.onclick = copyWord;
+      WordContainer.appendChild(CopyButton);
 
-        WordContainer.appendChild(CopyButton);
+      const RemoveButton = document.createElement("button");
+      RemoveButton.classList.add("remove");
+      RemoveButton.classList.add("padded-border");
+      RemoveButton.textContent = "Remove";
+      RemoveButton.value = word;
+      RemoveButton.onclick = removeWord;
 
-        const RemoveButton = document.createElement("button");
-        RemoveButton.classList.add("remove");
-        RemoveButton.classList.add("padded-border");
-        RemoveButton.textContent = "Remove";
-        RemoveButton.value = word;
-        RemoveButton.onclick = removeWord;
+      WordContainer.appendChild(RemoveButton);
 
-        WordContainer.appendChild(RemoveButton);
-
-        // .popup-body
-        //   .body-top
-        //   .body-content
-        //     .word-row
-        //         .word
-        //         .remove
-        //   .body-bottom
-        WordRow.appendChild(WordContainer);
-        BodyContent.appendChild(WordRow);
-      });
-
-      // Add disclaimer if empty
-      if (_words.length === 0) {
-        const EmptyDescriptionElement = document.createElement("div");
-        EmptyDescriptionElement.classList.add("text-center");
-        EmptyDescriptionElement.textContent = "There are no words currently stored.";
-        BodyContent.appendChild(EmptyDescriptionElement);
-      }
-
-      appendPagination(BodyBottom, _words.length);
+      // .popup-body
+      //   .body-top
+      //   .body-content
+      //     .word-row
+      //         .word
+      //         .remove
+      //   .body-bottom
+      WordRow.appendChild(WordContainer);
+      BodyContent.appendChild(WordRow);
     });
+
+    // Add disclaimer if empty
+    if (_words.length === 0) {
+      const EmptyDescriptionElement = document.createElement("div");
+      EmptyDescriptionElement.classList.add("text-center");
+      EmptyDescriptionElement.textContent = "There are no words currently stored.";
+      BodyContent.appendChild(EmptyDescriptionElement);
+    }
+
+    appendPagination(BodyBottom, _words.length);
+  }, error => console.error(error));
 };
 
 // Compares two strings based on filter type.
@@ -252,6 +255,15 @@ const shouldfilterWord = (word, filter) => {
       return false;
   }
 };
+
+const getStore = () => new Promise(resolve => browser.storage.local.get("wordstore", wordstore => {
+  if (wordstore.wordstore) {
+    resolve(wordstore.wordstore);
+  }
+  else {
+    resolve({});
+  }
+}));
 
 // Adds event listeners to DOM elements.
 const addEventListeners = () => {

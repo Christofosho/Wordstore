@@ -21,6 +21,9 @@
   see <https://www.gnu.org/licenses/>.
 */
 
+// Support for Chrome browser object.
+const browser = window.chrome ? chrome : browser;
+
 browser.contextMenus.create({
   id: "add-single-word",
   title: browser.i18n.getMessage("menuItemAddSingleWord"),
@@ -48,8 +51,7 @@ const saveWord = word => {
   }
 
   // Get our existing wordstore.
-  browser.storage.local.get()
-  .then(wordstore => {
+  getStore().then(wordstore => {
 
     // Do not add the same word twice!
     if (wordstore[selectedText.toLowerCase()]) {
@@ -57,8 +59,18 @@ const saveWord = word => {
     }
 
     // Save our new highlighted word.
-    browser.storage.local.set({
+    browser.storage.local.set({ "wordstore": {
+      ...wordstore,
       [selectedText.toLowerCase()]: selectedText
-    });
-  }, console.error);
+    }});
+  }, error => console.error(error));
 };
+
+const getStore = () => new Promise(resolve => browser.storage.local.get("wordstore", wordstore => {
+  if (wordstore.wordstore) {
+    resolve(wordstore.wordstore);
+  }
+  else {
+    resolve({});
+  }
+}));
