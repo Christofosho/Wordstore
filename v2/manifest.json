@@ -26,12 +26,5 @@
   "permissions": [
     "storage",
     "contextMenus"
-  ],
-
-  "content_scripts": [
-    {
-      "matches": ["*://*/*"],
-      "js": ["background.js"]
-    }
   ]
 }
