@@ -30,6 +30,9 @@ const SearchInput = document.querySelector(".popup-search__input");
 const SearchFilter = document.querySelector(".popup-search__select");
 const CsvExportButton = document.querySelector(".csv-export-button");
 
+const WORD_INDEX = 0;
+const ADDED_INDEX = 1;
+
 let page = 1;
 
 // Support for Chrome browser object.
@@ -55,7 +58,7 @@ const addWord = event => {
     browser.storage.local
       .set({ "wordstore": {
         ...wordstore,
-        [word.toLowerCase()]: word
+        [word.toLowerCase()]: [word, +new Date]
       }}, populateBody);
 
     WordInput.value = "";
@@ -172,10 +175,10 @@ const populateBody = () => {
     /* Add stored content */
     const _page = page * 10;
     _words.slice(_page - 10, _page)
-    .forEach(word => {
+    .forEach(word_row => {
 
       // Filter out if no match
-      if (shouldfilterWord(word, SearchInput.value)) return;
+      if (shouldfilterWord(word_row, SearchInput.value)) return;
 
       const WordRow = document.createElement("div");
       WordRow.classList.add("flex");
@@ -183,11 +186,11 @@ const populateBody = () => {
 
       const WordContainer = document.createElement("div");
       WordContainer.classList.add("word-container");
-      WordContainer.title = wordstore[word];
+      WordContainer.title = wordstore[word_row][WORD_INDEX];
 
       const Word = document.createElement("span");
       Word.classList.add("word");
-      Word.textContent = wordstore[word];
+      Word.textContent = wordstore[word_row][WORD_INDEX];
 
       WordContainer.appendChild(Word);
 
@@ -195,7 +198,7 @@ const populateBody = () => {
       CopyButton.classList.add("copy");
       CopyButton.classList.add("padded-border");
       CopyButton.textContent = "Copy";
-      CopyButton.value = wordstore[word];
+      CopyButton.value = wordstore[word_row][WORD_INDEX];
       CopyButton.onclick = copyWord;
 
       WordContainer.appendChild(CopyButton);
@@ -204,7 +207,7 @@ const populateBody = () => {
       RemoveButton.classList.add("remove");
       RemoveButton.classList.add("padded-border");
       RemoveButton.textContent = "Remove";
-      RemoveButton.value = word;
+      RemoveButton.value = word_row;
       RemoveButton.onclick = removeWord;
 
       WordContainer.appendChild(RemoveButton);
@@ -261,7 +264,11 @@ const generateCsv = event => {
   getStore().then(wordstore => {
     const _words = Object.values(wordstore);
     if (_words.length) {
-      const _csv = _words.join("\n");
+      const _csv = "word,date_added\n"
+      + Object.values(wordstore).map(word => {
+        word[ADDED_INDEX] = (new Date(word[ADDED_INDEX])).toISOString();
+        return `${word.join(",")}`;
+      }).join("\n");
 
       const hiddenElement = document.createElement("a");
       hiddenElement.href = "data:text/csv;charset=utf-8," + encodeURI(_csv);
@@ -273,6 +280,9 @@ const generateCsv = event => {
   });
 };
 
+// Words are stored in the storage key "wordstore".
+// Word row contents:
+//   word, date_added
 const getStore = () => new Promise(resolve => browser.storage.local.get("wordstore", wordstore => {
   if (wordstore.wordstore) {
     resolve(wordstore.wordstore);
@@ -281,6 +291,22 @@ const getStore = () => new Promise(resolve => browser.storage.local.get("wordsto
     resolve({});
   }
 }));
+
+const fixV1Data = () => {
+  getStore().then(wordstore => {
+    const _words = Object.keys(wordstore);
+    if (_words.length) {
+      // Check if values are strings, and replace with new [word, date] pattern.
+      if (typeof wordstore[_words[0]] === "string") {
+        const added = +new Date;
+        for (const key of _words) {
+          wordstore[key] = [wordstore[key], added];
+        }
+        chrome.storage.local.set({ "wordstore": wordstore }, populateBody);
+      }
+    }
+  });
+};
 
 // Adds event listeners to DOM elements.
 const addEventListeners = () => {
@@ -292,6 +318,10 @@ const addEventListeners = () => {
 };
 
 document.addEventListener("DOMContentLoaded", () => {
+
+  // Backward compatibility for wordstore rows constructed like: {word.toLowerCase(): "word"}
+  fixV1Data();
+
   populateBody();
   addEventListeners();
 
