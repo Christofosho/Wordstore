@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Wordstore",
-  "version": "1.1",
+  "version": "2.0",
   "default_locale": "en",
 
   "description": "Add words on a page to a word list, to be used for various purposes.",
