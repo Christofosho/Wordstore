@@ -20,7 +20,6 @@
 *, html, body {
   margin: 0;
   padding: 0;
-  overflow: hidden;
 }
 
 .wordstore {
@@ -48,11 +47,6 @@
   margin-right: 10px;
 }
 
-.popup-header__img {
-  height: 32px;
-  width: 32px;
-}
-
 .hr {
   width: 95%;
   margin-bottom: 10px;
@@ -68,6 +62,37 @@
 
 .text-center {
   text-align: center;
+}
+
+.popup-dropdown__button {
+  height: 32px;
+  width: 32px;
+}
+
+.popup-dropdown__content {
+  display: none;
+  position: absolute;
+  margin-right: 30px;
+  background: white;
+  padding: 8px 8px 0;
+  border: 1px solid #CDCDCD;
+}
+
+.popup-dropdown:hover .popup-dropdown__content {
+  display: flex;
+  flex-direction: column;
+}
+
+.popup-dropdown__item {
+  text-decoration: none;
+  color: black;
+  cursor: pointer;
+  padding: 2px;
+  margin-bottom: 8px;
+}
+
+.popup-dropdown__item:hover {
+  background: #DCDCDC;
 }
 
 .padded-border {
