@@ -28,6 +28,7 @@ const WordInput = document.querySelector(".word__new");
 const AddButton = document.querySelector(".add");
 const SearchInput = document.querySelector(".popup-search__input");
 const SearchFilter = document.querySelector(".popup-search__select");
+const CsvExportButton = document.querySelector(".csv-export-button");
 
 let page = 1;
 
@@ -253,6 +254,22 @@ const shouldfilterWord = (word, filter) => {
   }
 };
 
+const generateCsv = event => {
+  getStore().then(wordstore => {
+    const _words = Object.values(wordstore);
+    if (_words.length) {
+      const _csv = _words.join("\n");
+
+      const hiddenElement = document.createElement("a");
+      hiddenElement.href = "data:text/csv;charset=utf-8," + encodeURI(_csv);
+      hiddenElement.target = "_blank";
+      hiddenElement.download = "wordstore.csv";
+      hiddenElement.click();
+      hiddenElement.remove();
+    }
+  });
+};
+
 const getStore = () => new Promise(resolve => chrome.storage.local.get("wordstore", wordstore => {
   if (wordstore.wordstore) {
     resolve(wordstore.wordstore);
@@ -268,6 +285,7 @@ const addEventListeners = () => {
   AddButton.onclick = addWord;
   SearchInput.onkeyup = populateBody;
   SearchFilter.onchange = populateBody;
+  CsvExportButton.onclick = generateCsv;
 };
 
 document.addEventListener("DOMContentLoaded", () => {
