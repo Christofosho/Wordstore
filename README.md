@@ -10,21 +10,9 @@ financial information.
 
 ## Features
 
-1. Store unlimited lines of text which can be quickly copied.
-2. Highlight and right-click text on a webpage, revealing a
-new context-menu option to store the highlighted text immediately.
-3. Remove items you no longer require on the list.
-4. Search your list for items containing, starting with, or ending
-with a given set of characters or words.
-5. Quickly access your words through your browser.
-
-### Planned Features
-
-1. Export your list to various formats.
-2. Edit existing items in the list.
-3. Multiple selection of items for removal or export.
-4. Optional hyperlinking of list items.
-5. Wildcard character in search strings.
+1. Store and retrieve text, through the popup or by selecting and using the right-click menu.
+2. Search your stored text and copy what you need.
+3. Export your list to a spreadsheet format.
 
 ## Get the Extension
 
@@ -32,6 +20,21 @@ Chrome: https://chrome.google.com/webstore/detail/wordstore/lnpncdompfejbleokjna
 Firefox: https://addons.mozilla.org/en-US/firefox/addon/wordstore/
 
 Or add it yourself: https://github.com/Christofosho/Wordstore/releases
+
+## Optional Use Cases
+
+1. Todo list: Add and remove the things you need to complete.
+2. Language learning: Store words and phrases you want to learn.
+3. Quoting and citation: Grab insightful or useful text from a page.
+4. Brainstorming: Generate ideas and store them for later.
+
+## Planned Features
+
+1. Edit existing items in the list.
+2. Multiple selection of items for removal or export.
+3. Optional hyperlinking of list items.
+4. Wildcard character in search strings.
+5. Tagging, sorting, and filtering of items.
 
 ## Licensing
 
