@@ -26,6 +26,13 @@ with a given set of characters or words.
 4. Optional hyperlinking of list items.
 5. Wildcard character in search strings.
 
+## Get the Extension
+
+Chrome: https://chrome.google.com/webstore/detail/wordstore/lnpncdompfejbleokjnafkpbpbgoddfm
+Firefox: https://addons.mozilla.org/en-US/firefox/addon/wordstore/
+
+Or add it yourself: https://github.com/Christofosho/Wordstore/releases
+
 ## Licensing
 
 This program is free software: you can redistribute it
