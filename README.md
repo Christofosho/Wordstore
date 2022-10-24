@@ -16,8 +16,8 @@ financial information.
 
 ## Get the Extension
 
-Chrome: https://chrome.google.com/webstore/detail/wordstore/lnpncdompfejbleokjnafkpbpbgoddfm
-Firefox: https://addons.mozilla.org/en-US/firefox/addon/wordstore/
+- Chrome: https://chrome.google.com/webstore/detail/wordstore/lnpncdompfejbleokjnafkpbpbgoddfm
+- Firefox: https://addons.mozilla.org/en-US/firefox/addon/wordstore/
 
 Or add it yourself: https://github.com/Christofosho/Wordstore/releases
 
