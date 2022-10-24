@@ -178,7 +178,6 @@ const populateBody = () => {
       if (shouldfilterWord(word_row, SearchInput.value)) return;
 
       const WordRow = document.createElement("div");
-      WordRow.classList.add("flex");
       WordRow.classList.add("word-row");
 
       const WordContainer = document.createElement("div");
