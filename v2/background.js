@@ -34,10 +34,11 @@ browser.contextMenus.onClicked.addListener((info, tab) => {
   switch (info.menuItemId) {
     case "add-single-word":
       saveWord(info.selectionText);
+      break;
   }
 });
 
-const saveWord = word => {
+const saveWord = async word => {
   const selectedText = word.trim();
 
   // Do not save empty strings.
@@ -51,19 +52,18 @@ const saveWord = word => {
   }
 
   // Get our existing wordstore.
-  getStore().then(wordstore => {
+  const wordstore = await getStore();
 
-    // Do not add the same word twice!
-    if (wordstore[selectedText.toLowerCase()]) {
-      return;
-    }
+  // Do not add the same word twice!
+  if (wordstore[selectedText.toLowerCase()]) {
+    return;
+  }
 
-    // Save our new highlighted word.
-    browser.storage.local.set({ "wordstore": {
-      ...wordstore,
-      [selectedText.toLowerCase()]: selectedText
-    }});
-  }, error => console.error(error));
+  // Save our new highlighted word.
+  browser.storage.local.set({ "wordstore": {
+    ...wordstore,
+    [selectedText.toLowerCase()]: [selectedText, +new Date],
+  }});
 };
 
 const getStore = () => new Promise(resolve => browser.storage.local.get("wordstore", wordstore => {
