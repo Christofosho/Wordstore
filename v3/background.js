@@ -34,7 +34,7 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
   }
 });
 
-const saveWord = word => {
+const saveWord = async word => {
   const selectedText = word.trim();
 
   // Do not save empty strings.
@@ -48,19 +48,18 @@ const saveWord = word => {
   }
 
   // Get our existing wordstore.
-  getStore().then(wordstore => {
+  const wordstore = await getStore();
 
-    // Do not add the same word twice!
-    if (wordstore[selectedText.toLowerCase()]) {
-      return;
-    }
+  // Do not add the same word twice!
+  if (wordstore[selectedText.toLowerCase()]) {
+    return;
+  }
 
-    // Save our new highlighted word.
-    chrome.storage.local.set({ "wordstore": {
-      ...wordstore,
-      [selectedText.toLowerCase()]: selectedText
-    }});
-  }, error => console.error(error));
+  // Save our new highlighted word.
+  chrome.storage.local.set({ "wordstore": {
+    ...wordstore,
+    [selectedText.toLowerCase()]: [selectedText, +new Date],
+  }});
 };
 
 const getStore = () => new Promise(resolve => chrome.storage.local.get("wordstore", wordstore => {
