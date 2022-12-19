@@ -192,16 +192,13 @@
 
 .popup-body__content {
   flex: 1;
-}
-
-.word-row {
-  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .word-container {
   display: flex;
-  flex: 1;
-  max-width: 100%;
+  width: 100%;
 }
 
 .copy,
@@ -238,7 +235,6 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  flex: 1;
 }
 
 .word:not(.word__new) {
