@@ -29,6 +29,7 @@ const AddButton = document.querySelector(".add");
 const SearchInput = document.querySelector(".popup-search__input");
 const SearchFilter = document.querySelector(".popup-search__select");
 const CsvExportButton = document.querySelector(".csv-export-button");
+const DropdownButton = document.querySelector("#popup-dropdown__button");
 
 const WORD_INDEX = 0;
 const ADDED_INDEX = 1;
@@ -271,6 +272,12 @@ const generateCsv = async event => {
   }
 };
 
+const toggleDropdown = () => {
+  document
+    .getElementById("popup-dropdown__content")
+    .classList.toggle("show-flex");
+};
+
 // Words are stored in the storage key "wordstore".
 // Word row contents:
 //   word, date_added
@@ -300,11 +307,12 @@ const fixV1Data = async () => {
 
 // Adds event listeners to DOM elements.
 const addEventListeners = () => {
-  WordInput.onkeydown = addOnEnter;
-  AddButton.onclick = addWord;
-  SearchInput.onkeyup = populateBody;
-  SearchFilter.onchange = populateBody;
-  CsvExportButton.onclick = generateCsv;
+  WordInput.addEventListener("keydown", addOnEnter);
+  AddButton.addEventListener("click", addWord);
+  SearchInput.addEventListener("keyup", populateBody);
+  SearchFilter.addEventListener("change", populateBody);
+  CsvExportButton.addEventListener("click", generateCsv);
+  DropdownButton.addEventListener("click", toggleDropdown);
 };
 
 document.addEventListener("DOMContentLoaded", () => {

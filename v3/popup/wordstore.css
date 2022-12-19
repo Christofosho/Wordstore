@@ -68,28 +68,29 @@
   text-align: center;
 }
 
+.show-flex {
+  display: flex !important;
+}
+
 .popup-dropdown {
   display: flex;
 }
 
-.popup-dropdown__button {
+#popup-dropdown__button {
   height: 24px;
   width: 24px;
   align-self: center;
+  cursor: pointer;
 }
 
-.popup-dropdown__content {
+#popup-dropdown__content {
   display: none;
+  flex-direction: column;
   position: absolute;
   top: 38px;
   background: white;
   padding: 8px 8px 0;
   border: 1px solid #CDCDCD;
-}
-
-.popup-dropdown:hover .popup-dropdown__content {
-  display: flex;
-  flex-direction: column;
 }
 
 .popup-dropdown__item {
