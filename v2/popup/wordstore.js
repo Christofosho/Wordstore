@@ -227,6 +227,7 @@ const populateBody = async () => {
   if (_words.length === 0) {
     const EmptyDescriptionElement = document.createElement("div");
     EmptyDescriptionElement.classList.add("text-center");
+    EmptyDescriptionElement.classList.add("no-words-stored");
     EmptyDescriptionElement.textContent = "There are no words currently stored.";
     BodyContent.appendChild(EmptyDescriptionElement);
   }

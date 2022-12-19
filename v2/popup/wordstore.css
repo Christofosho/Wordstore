@@ -35,19 +35,25 @@
 
 .popup-header {
   justify-content: space-between;
-  align-items: flex-end;
   width: 95%;
   height: 32px;
   margin: 10px 0 0;
 }
 
+.popup-header__left {
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
 .popup-header__h1 {
-  font-size: 2em;
-  letter-spacing: 0.2em;
-  margin-left: 20px;
+  font-size: 2.2em;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  margin-right: 20px;
+  letter-spacing: 2px;
 }
 
 .popup-header__version {
+  font-size: 0.8em;
   margin-bottom: 5px;
 }
 
@@ -81,6 +87,7 @@
   width: 24px;
   align-self: center;
   cursor: pointer;
+  margin-bottom: 5px;
 }
 
 #popup-dropdown__content {
@@ -88,8 +95,9 @@
   flex-direction: column;
   position: absolute;
   top: 38px;
+  right: 10px;
   background: white;
-  padding: 8px 8px 0;
+  padding: 5px 8px;
   border: 1px solid #CDCDCD;
 }
 
@@ -97,8 +105,11 @@
   text-decoration: none;
   color: black;
   cursor: pointer;
-  padding: 2px;
-  margin-bottom: 8px;
+  padding: 8px;
+}
+
+.popup-dropdown__item:not(:last-child) {
+  border-bottom: solid 1px #DDD;
 }
 
 .popup-dropdown__item:hover {
@@ -110,6 +121,10 @@
   border-radius: 0;
   border: 1px solid #CDCDCD;
   background-color: white;
+}
+
+.popup-search__input, .word__new {
+  margin-right: 5px;
 }
 
 .pagination {
@@ -135,6 +150,11 @@
 
 .pagination__page {
   width: 50px;
+}
+
+.no-words-stored {
+  width: 100%;
+  align-self: center;
 }
 
 .add,
