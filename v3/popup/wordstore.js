@@ -175,9 +175,6 @@ const populateBody = async () => {
     // Filter out if no match
     if (shouldfilterWord(word_row, SearchInput.value)) return;
 
-    const WordRow = document.createElement("div");
-    WordRow.classList.add("word-row");
-
     const WordContainer = document.createElement("div");
     WordContainer.classList.add("word-container");
     WordContainer.title = wordstore[word_row][WORD_INDEX];
@@ -209,18 +206,19 @@ const populateBody = async () => {
     // .popup-body
     //   .body-top
     //   .body-content
-    //     .word-row
+    //     .word-container
     //         .word
+    //         .copy
     //         .remove
     //   .body-bottom
-    WordRow.appendChild(WordContainer);
-    BodyContent.appendChild(WordRow);
+    BodyContent.appendChild(WordContainer);
   });
 
   // Add disclaimer if empty
   if (_words.length === 0) {
     const EmptyDescriptionElement = document.createElement("div");
     EmptyDescriptionElement.classList.add("text-center");
+    EmptyDescriptionElement.classList.add("no-words-stored");
     EmptyDescriptionElement.textContent = "There are no words currently stored.";
     BodyContent.appendChild(EmptyDescriptionElement);
   }
