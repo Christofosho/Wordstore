@@ -331,10 +331,6 @@ const disableWordEdit = async event => {
         [event.target.value.toLowerCase()]: [event.target.value, +new Date]
       }}, populateBody);
     }
-
-    // Swap the input with the plain text
-    event.target.classList.add("hide");
-    TextWord.classList.remove("hide");
   }
 };
 
