@@ -275,7 +275,7 @@ const generateCsv = async event => {
   const wordstore = await getStore();
   const _words = Object.values(wordstore);
   if (_words.length) {
-    const _csv = "word,date_added\n"
+    const _csv = "word,modified\n"
     + Object.values(wordstore).map(word => {
       word[ADDED_INDEX] = (new Date(word[ADDED_INDEX])).toISOString();
       return `${word.join(",")}`;
@@ -340,7 +340,7 @@ const disableWordEdit = async event => {
 
 // Words are stored in the storage key "wordstore".
 // Word row contents:
-//   word, date_added
+//   word, modified
 const getStore = () => new Promise(resolve => browser.storage.local.get("wordstore", wordstore => {
   if (wordstore.wordstore) {
     resolve(wordstore.wordstore);
