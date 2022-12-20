@@ -62,6 +62,8 @@
   margin-bottom: 10px;
 }
 
+
+
 .flex {
   display: flex;
 }
@@ -72,6 +74,10 @@
 
 .text-center {
   text-align: center;
+}
+
+.hide {
+  display: none;
 }
 
 .show-flex {

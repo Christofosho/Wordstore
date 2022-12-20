@@ -176,7 +176,7 @@ const populateBody = async () => {
   /* Add stored content */
   const _page = page * 10;
   _words.slice(_page - 10, _page)
-  .forEach(word_row => {
+  .forEach((word_row, index) => {
 
     // Filter out if no match
     if (shouldfilterWord(word_row, SearchInput.value)) return;
@@ -186,10 +186,24 @@ const populateBody = async () => {
     WordContainer.title = wordstore[word_row][WORD_INDEX];
 
     const Word = document.createElement("span");
+    Word.id = `word-${index}-text`;
+    Word.dataset.text = word_row.toLowerCase();
     Word.classList.add("word");
     Word.textContent = wordstore[word_row][WORD_INDEX];
+    Word.addEventListener("click", enableWordEdit);
 
     WordContainer.appendChild(Word);
+
+    const WordEdit = document.createElement("input");
+    WordEdit.type = "text";
+    WordEdit.id = `word-${index}-input`;
+    WordEdit.value = wordstore[word_row][WORD_INDEX];
+    WordEdit.classList.add("word");
+    WordEdit.classList.add("hide");
+    WordEdit.addEventListener("blur", disableWordEdit);
+    WordEdit.addEventListener("keyup", disableWordEdit);
+
+    WordContainer.appendChild(WordEdit);
 
     const CopyButton = document.createElement("button");
     CopyButton.classList.add("copy");
@@ -280,6 +294,48 @@ const toggleDropdown = () => {
   document
     .getElementById("popup-dropdown__content")
     .classList.toggle("show-flex");
+};
+
+const enableWordEdit = event => {
+  const word = event.target.id.match(/^word-(.+)-text$/);
+  if (word.length) {
+    const EditableWord = document.getElementById(`word-${word[1]}-input`);
+    if (EditableWord) {
+      event.target.classList.add("hide");
+      EditableWord.classList.remove("hide");
+      EditableWord.focus();
+    }
+  }
+};
+
+const disableWordEdit = async event => {
+  if (event.type === "keyup" && event.key !== "Enter") {
+    return;
+  }
+
+  const wordIndex = event.target.id.match(/^word-(.+)-input$/);
+  if (wordIndex.length) {
+    const TextWord = document.getElementById(`word-${wordIndex[1]}-text`);
+    const wordstore = await getStore();
+
+    // Save the new content unless it is unchanged or
+    // it exists already (in which case, reset it).
+    if (wordstore[event.target.value.toLowerCase()]) {
+      populateBody();
+    }
+    else {
+      delete wordstore[TextWord.dataset.text];
+      browser.storage.local
+      .set({ "wordstore": {
+        ...wordstore,
+        [event.target.value.toLowerCase()]: [event.target.value, +new Date]
+      }}, populateBody);
+    }
+
+    // Swap the input with the plain text
+    event.target.classList.add("hide");
+    TextWord.classList.remove("hide");
+  }
 };
 
 // Words are stored in the storage key "wordstore".
