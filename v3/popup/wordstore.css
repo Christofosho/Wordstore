@@ -74,6 +74,10 @@
   text-align: center;
 }
 
+.hide {
+  display: none;
+}
+
 .show-flex {
   display: flex !important;
 }
